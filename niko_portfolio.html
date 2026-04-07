@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.08);
+    --border-hover: rgba(0,0,0,0.18);
+    --accent: #0a0a0a;
+    --accent-green: #00a86b;
+    --accent-blue: #0066cc;
+    --text: #0a0a0a;
+    --muted: #888;
+    --muted2: #bbb;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; overflow-x: hidden; }
+
+  header {
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(245,244,240,0.94);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+  .logo { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; }
+  nav { display: flex; gap: 2rem; }
+  nav a { font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover { color: var(--accent); }
+
+  .hero {
+    padding: 5rem 3rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .about-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+  .about-label::before { content: ''; display: inline-block; width: 18px; height: 1px; background: var(--muted); }
+
+  h1 { font-family: var(--sans); font-size: clamp(2.4rem, 4vw, 3.4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem; color: var(--text); }
+
+  .bio { font-size: 0.97rem; color: #555; line-height: 1.85; margin-bottom: 2rem; }
+  .bio p { margin-bottom: 1rem; }
+  .bio p:last-child { margin-bottom: 0; }
+
+  .cta-row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-ghost { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.75rem 1.75rem; border: 1px solid var(--border-hover); color: var(--text); background: transparent; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; }
+  .btn-ghost:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .avatar-box { display: flex; justify-content: center; align-items: center; }
+  .avatar-frame { width: 280px; height: 320px; border: 1px solid var(--border); background: var(--surface); position: relative; overflow: hidden; }
+  .avatar-frame::before { content: ''; position: absolute; top: -1px; left: -1px; width: 36px; height: 36px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+  .avatar-frame::after { content: ''; position: absolute; bottom: -1px; right: -1px; width: 36px; height: 36px; border-bottom: 2px solid var(--accent-green); border-right: 2px solid var(--accent-green); }
+  .avatar-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 80px; color: rgba(0,0,0,0.05); background: linear-gradient(135deg, rgba(0,168,107,0.04), rgba(0,102,204,0.04)); }
+  .avatar-label { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.3em; text-transform: uppercase; white-space: nowrap; background: rgba(0,0,0,0.04); padding: 4px 12px; border: 1px solid var(--border); }
+
+  .divider { max-width: 1200px; margin: 0 auto; padding: 0 3rem; border-top: 1px solid var(--border); }
+
+  .section { max-width: 1200px; margin: 0 auto; padding: 4rem 3rem; }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
+  .section-title { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .section-heading { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: #000000; }
+
+  .resume-list { display: flex; flex-direction: column; }
+  .resume-entry { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+  .resume-entry:first-child { border-top: 1px solid var(--border); }
+  .resume-client { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; color: #000; margin-bottom: 0.4rem; line-height: 1.2; }
+  .resume-role { font-family: var(--mono); font-size: 10px; color: var(--accent-green); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1rem; }
+  .resume-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .resume-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 10px; border: 1px solid var(--border); color: var(--muted); background: var(--bg); }
+  .resume-desc { font-size: 0.95rem; color: #555; line-height: 1.8; margin-bottom: 1.5rem; }
+  .resume-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .resume-bullets li { font-size: 0.88rem; color: #444; line-height: 1.6; padding-left: 1.2rem; position: relative; }
+  .resume-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--muted2); font-family: var(--mono); }
+
+  .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .video-slot { background: var(--surface); border: 1px dashed rgba(0,0,0,0.15); aspect-ratio: 9/16; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; transition: border-color 0.2s, background 0.2s; }
+  .video-slot:hover { border-color: rgba(0,0,0,0.3); background: #fafaf8; }
+  .video-slot-icon { width: 40px; height: 40px; border: 1.5px solid var(--muted2); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .video-slot-icon svg { width: 16px; height: 16px; fill: var(--muted2); margin-left: 2px; }
+  .video-slot-label { font-family: var(--mono); font-size: 10px; color: var(--muted2); letter-spacing: 0.15em; text-transform: uppercase; text-align: center; padding: 0 1rem; }
+  .video-slot-sub { font-family: var(--mono); font-size: 9px; color: var(--muted2); opacity: 0.6; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  .skills-strip { border-top: 1px solid var(--border); padding: 2rem 3rem; max-width: 1200px; margin: 0 auto; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+  .skills-label { font-family: var(--mono); font-size: 10px; color: var(--muted2); letter-spacing: 0.2em; margin-right: 0.5rem; }
+  .skill-tag { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 14px; border: 1px solid var(--border); background: var(--surface); transition: all 0.2s; cursor: default; }
+  .skill-tag:hover { color: var(--accent); border-color: var(--border-hover); background: #fff; }
+
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-family: var(--mono); font-size: 10px; color: var(--muted2); letter-spacing: 0.1em; }
+  .footer-links { display: flex; gap: 1.5rem; align-items: center; }
+  .footer-links a { font-family: var(--mono); font-size: 10px; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+    .avatar-box { display: none; }
+    .resume-entry { grid-template-columns: 1fr; gap: 1rem; }
+    .video-grid { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 1.2rem 1.5rem; }
+    nav { display: none; }
+    .section { padding: 3rem 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Niko's Portfolio</div>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="about-label">About Me</div>
+    <h1>About Me</h1>
+    <div class="bio">
+      <p>I'm Niko — I have one year of hands-on social media marketing experience and a strong foundation in what makes content perform. My core strengths lie in scriptwriting, video and photo production, and building visuals that capture attention.</p>
+      <p>I'm actively expanding my skill set into the analytical side of marketing — learning to read performance data, identify what's driving results, and make smarter creative decisions because of it. Most recently, I've begun building websites and workflow automations, adding a technical edge to my creative background. I'm looking to grow in every aspect of marketing.</p>
+    </div>
+    <div class="cta-row">
+      <a href="#contact" class="btn-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'}); return false;">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="section-header">
+    <div>
+      <p class="section-title">// work history</p>
+      <h2 class="section-heading">Experience</h2>
+    </div>
+  </div>
+
+  <div class="resume-list">
+    <div class="resume-entry">
+      <div class="resume-left">
+        <div class="resume-client">Anthony Media Group</div>
+        <div class="resume-role">Marketing Intern</div>
+        <div class="resume-tags">
+          <span class="resume-tag">Meta Ads</span>
+          <span class="resume-tag">Shopify</span>
+          <span class="resume-tag">Paid Social</span>
+          <span class="resume-tag">Analytics</span>
+        </div>
+      </div>
+      <div class="resume-right">
+        <p class="resume-desc">Interned at a digital marketing agency, contributing to paid advertising efforts for e-commerce clients running Shopify stores.</p>
+        <ul class="resume-bullets">
+          <li>Assisted in optimizing Meta ad campaigns to improve performance and reduce cost per acquisition</li>
+          <li>Analyzed campaign data to identify underperforming ad sets and recommend adjustments</li>
+          <li>Gained hands-on experience with paid social strategy for e-commerce brands</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="resume-entry">
+      <div class="resume-left">
+        <div class="resume-client">Mardirosian &amp; Mardirosian Law</div>
+        <div class="resume-role">Social Media Marketer</div>
+        <div class="resume-tags">
+          <span class="resume-tag">Instagram</span>
+          <span class="resume-tag">Facebook</span>
+          <span class="resume-tag">Content Creation</span>
+        </div>
+      </div>
+      <div class="resume-right">
+        <p class="resume-desc">Managed social media presence for a law firm, building brand awareness and maintaining a consistent, professional content cadence across platforms.</p>
+        <ul class="resume-bullets">
+          <li>Managed and grew the firm's Instagram and Facebook accounts</li>
+          <li>Produced and scheduled weekly posts tailored to a legal audience</li>
+          <li>Developed branded content that reinforced the firm's credibility and voice</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="resume-entry">
+      <div class="resume-left">
+        <div class="resume-client">Cutmasters Salon</div>
+        <div class="resume-role">Social Media &amp; Web</div>
+        <div class="resume-tags">
+          <span class="resume-tag">Instagram</span>
+          <span class="resume-tag">Facebook</span>
+          <span class="resume-tag">Web Dev</span>
+          <span class="resume-tag">Automation</span>
+        </div>
+      </div>
+      <div class="resume-right">
+        <p class="resume-desc">Ongoing social media management and full digital buildout for a local salon — including a custom website, email capture system, and automated client follow-up workflow, all built with Claude Code.</p>
+        <ul class="resume-bullets">
+          <li>Manage weekly content posts across Instagram and Facebook</li>
+          <li>Built and maintain a custom website for the salon</li>
+          <li>Developed an email capture system to grow the salon's client list</li>
+          <li>Created an automated email follow-up workflow to re-engage clients</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="section-header">
+    <div>
+      <p class="section-title">// videos</p>
+      <h2 class="section-heading">Creative Work</h2>
+    </div>
+  </div>
+
+  <div class="video-grid">
+    <div class="video-slot">
+      <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="video-slot-label">Video coming soon</div>
+      <div class="video-slot-sub">Add your content here</div>
+    </div>
+    <div class="video-slot">
+      <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="video-slot-label">Video coming soon</div>
+      <div class="video-slot-sub">Add your content here</div>
+    </div>
+    <div class="video-slot">
+      <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="video-slot-label">Video coming soon</div>
+      <div class="video-slot-sub">Add your content here</div>
+    </div>
+    <div class="video-slot">
+      <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="video-slot-label">Video coming soon</div>
+      <div class="video-slot-sub">Add your content here</div>
+    </div>
+    <div class="video-slot">
+      <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="video-slot-label">Video coming soon</div>
+      <div class="video-slot-sub">Add your content here</div>
+    </div>
+    <div class="video-slot">
+      <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <div class="video-slot-label">Video coming soon</div>
+      <div class="video-slot-sub">Add your content here</div>
+    </div>
+  </div>
+</section>
+
+<div class="skills-strip">
+  <span class="skills-label">SKILLS //</span>
+  <span class="skill-tag">Video Production</span>
+  <span class="skill-tag">Content Strategy</span>
+  <span class="skill-tag">Scriptwriting</span>
+  <span class="skill-tag">Photography</span>
+  <span class="skill-tag">Social Media</span>
+  <span class="skill-tag">Analytics</span>
+  <span class="skill-tag">Web Development</span>
+  <span class="skill-tag">Automations</span>
+</div>
+
+<footer id="contact">
+  <span class="footer-copy">© 2025 — Niko Parsekhian</span>
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/niko-parsekhian-889b6b38b" target="_blank">LinkedIn</a>
+    <a href="https://www.instagram.com/niko_parsekhian_/" target="_blank">Instagram</a>
+    <a href="mailto:niko.parsekhian@gmail.com">Email</a>
+  </div>
+</footer>
+
+</body>
+</html>
