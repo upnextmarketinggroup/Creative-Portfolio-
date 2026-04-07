@@ -85,7 +85,8 @@
   .resume-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--muted2); font-family: var(--mono); }
 
   .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-  .video-slot { background: var(--surface); border: 1px dashed rgba(0,0,0,0.15); aspect-ratio: 9/16; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; transition: border-color 0.2s, background 0.2s; }
+  .video-slot { background: var(--surface); border: 1px dashed rgba(0,0,0,0.15); aspect-ratio: 9/16; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; transition: border-color 0.2s, background 0.2s; overflow: hidden; }
+  .video-slot blockquote.tiktok-embed { margin: 0 !important; max-width: 100% !important; min-width: 0 !important; width: 100% !important; height: 100% !important; }
   .video-slot:hover { border-color: rgba(0,0,0,0.3); background: #fafaf8; }
   .video-slot-icon { width: 40px; height: 40px; border: 1.5px solid var(--muted2); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
   .video-slot-icon svg { width: 16px; height: 16px; fill: var(--muted2); margin-left: 2px; }
@@ -223,9 +224,12 @@
 
   <div class="video-grid">
     <div class="video-slot">
-      <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <div class="video-slot-label">Video coming soon</div>
-      <div class="video-slot-sub">Add your content here</div>
+      <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@upnextmarketing/video/7625894804643138830" data-video-id="7625894804643138830">
+        <section>
+          <a target="_blank" title="@upnextmarketing" href="https://www.tiktok.com/@upnextmarketing?refer=embed">@upnextmarketing</a>
+          <a target="_blank" title="♬ original sound  - upnextmarketing" href="https://www.tiktok.com/music/original-sound-upnextmarketing-7625895012080831245?refer=embed">♬ original sound  - upnextmarketing</a>
+        </section>
+      </blockquote>
     </div>
     <div class="video-slot">
       <div class="video-slot-icon"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
@@ -276,5 +280,6 @@
   </div>
 </footer>
 
+<script async src="https://www.tiktok.com/embed.js"></script>
 </body>
 </html>
